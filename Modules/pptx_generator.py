@@ -1,25 +1,43 @@
 from pptx import Presentation
 from pptx.dml.color import RGBColor
+import json 
+
+with open("slides.json", "r") as f:
+    slides_data = json.load(f)
 
 presentation_path = 'Static/pptx_templates/powerpoint1.pptx'
 # Load the existing presentation
 presentation = Presentation(presentation_path)
 
-first_slide = presentation.slides[0]
-if first_slide.shapes.title:
-    first_slide.shapes.title.text = "Hello Amrit"
-    
-    # Access the text frame of the title
-    text_frame = first_slide.shapes.title.text_frame
-    # If there's no run in the text frame (newly added text), 
-    # then we set the font color for the entire text frame.
-    if len(text_frame.paragraphs[0].runs) == 0:
-        text_frame.paragraphs[0].font.color.rgb = RGBColor(255, 255, 255)
+# Loop through each slide in the presentation and the JSON data
+for i, (slide, slide_data) in enumerate(zip(presentation.slides, slides_data["slides"])):
+
+    # First Slide: Title Slide
+    if i == 0:
+        if slide.shapes.title:
+            slide.shapes.title.text = slide_data["title"]
+        if slide.shapes.placeholders[1]:
+            slide.shapes.placeholders[1].text = slide_data["subtitle"]
+        
+    # Second Slide: Table of Contents
+    elif i == 1:
+        if slide.shapes.title:
+            slide.shapes.title.text = slide_data["title"]
+        if slide.shapes.placeholders[1]:
+            slide.shapes.placeholders[1].text = "\n".join(slide_data["bullets"])
+        
+    # Last Slide: Thank You
+    elif i == len(slides_data["slides"]) - 1:
+        if slide.shapes.title:
+            slide.shapes.title.text = slide_data["title"]
+        
+    # In-between Slides: Content Slides
     else:
-        # If there's already a run, set the font color for that specific run
-        text_run = text_frame.paragraphs[0].runs[0]
-        text_run.font.color.rgb = RGBColor(255, 255, 255)
+        print("Slide",i)
+        if slide.shapes.title:
+            slide.shapes.title.text = slide_data["title"]
+        if slide.shapes.placeholders[1]:
+            slide.shapes.placeholders[1].text = "\n".join(slide_data["content"])
 
-presentation.save('modified_presentation2.pptx')
-
-
+# Save the modified presentation
+presentation.save("NewModified_Presentation.pptx")
