@@ -4,3 +4,4 @@ python-dotenv==0.19.2
 requests==2.26.0
 openai
 elevenlabs
+Flask-Cors==3.0.10
