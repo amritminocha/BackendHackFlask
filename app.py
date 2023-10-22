@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request
 from services.openai.chatgpt import get_openai_response
 app = Flask(__name__)
 
@@ -9,7 +9,9 @@ def index():
 
 @app.route('/gpt')
 def getResponse():
-    return get_openai_response()
+    topic = request.args.get('topic')
+    total_slides = int(request.args.get('total_slides'))
+    return get_openai_response(topic, total_slides)
 
 
 if __name__ == '__main__':
