@@ -1,5 +1,7 @@
 from flask import Flask, request
 from services.openai.chatgpt import get_openai_response
+from Modules.pptx_generator import create_presentation
+
 app = Flask(__name__)
 
 @app.route('/')
