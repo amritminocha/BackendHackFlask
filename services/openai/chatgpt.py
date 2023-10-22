@@ -1,14 +1,37 @@
 import openai
 import os
+# import re
+import json
 from dotenv import load_dotenv
+from .prompts import get_prompt_summarize_ppt
+from flask import jsonify
 load_dotenv()
 
-def get_openai_response():
+
+# def extract_json(response_text):
+    # match = re.search(r'```json(.*?)```', response_text, re.DOTALL)
+    # if match:
+    #     json_string = match.group(1).strip()
+    #     return json.loads(json_string)
+    # else:
+    #     # If not found, try parsing the whole response as JSON
+    #     try:
+    #         return json.loads(response_text)
+    #     except json.JSONDecodeError:
+    #         # If it fails, return None or handle the error as desired
+    #         return None
+
+
+
+def get_openai_response(topic, total_slides):
+    prompt = get_prompt_summarize_ppt(topic, total_slides)
     response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
+        model="gpt-4",
         messages=[
             {"role": "system", "content": "You are a helpful assistant."},
-            {"role": "user", "content": "Give me an introduction about chatGPT"},
+            {"role": "user", "content": prompt},
         ]
     )
-    return response["choices"][0]["message"]["content"]
+    response_data = json.loads(response["choices"][0]["message"]["content"])
+    
+    return jsonify(response_data)
