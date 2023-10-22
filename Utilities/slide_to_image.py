@@ -1,11 +1,18 @@
 import os
 from comtypes.client import CreateObject
 
+def clear_folder(folder_path: str):
+    for filename in os.listdir(folder_path):
+        file_path = os.path.join(folder_path, filename)
+        os.remove(file_path)
+
 def save_pptx_as_png(png_foldername: str, pptx_filename: str, overwrite_folder: bool = False):
-    # Check if the folder already exists
-    if os.path.isdir(png_foldername) and not overwrite_folder:
-        print(f"Folder {png_foldername} already exists. Set overwrite_folder=True, if you want to overwrite folder content.")
-        return
+    if os.path.isdir(png_foldername):
+        if overwrite_folder:
+            clear_folder(png_foldername)
+        else:
+            print(f"Folder {png_foldername} already exists. Set overwrite_folder=True, if you want to overwrite folder content.")
+            return
 
     # Create PowerPoint Application Object
     powerpoint = CreateObject("Powerpoint.Application")
