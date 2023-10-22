@@ -42,7 +42,8 @@ def generate_audio(text, output_path) -> str:
         "voice_settings": {
             "stability": stability,
             "similarity_boost": similarity,
-        }
+        },
+        "model_id": "eleven_multilingual_v2"
     }
     response = requests.post(url, json=data, headers=headers)
 
@@ -54,5 +55,3 @@ def generate_audio(text, output_path) -> str:
         output.write(response.content)
 
     return full_output_path
-
-generate_audio("الطقس اليوم جميل.",'Audio_Files')
