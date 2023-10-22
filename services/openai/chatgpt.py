@@ -28,7 +28,7 @@ def get_openai_response(topic, total_slides):
     response = openai.ChatCompletion.create(
         model="gpt-4",
         messages=[
-            {"role": "system", "content": "You are a helpful assistant."},
+            {"role": "system", "content": "Just return a JSON object, not anything before or after JSON"},
             {"role": "user", "content": prompt},
         ]
     )

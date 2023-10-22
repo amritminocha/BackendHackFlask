@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify, send_file, url_for
 from services.openai.chatgpt import get_openai_response
 from Modules.pptx_generator import create_presentation
-from Modules.elevenlabs import generate_audio
+# from Modules.elevenlabs import generate_audio
 # from Utilities.slide_to_image import save_pptx_as_png
 import os
 
