@@ -18,22 +18,18 @@ def getResponse():
     total_slides = int(request.args.get('total_slides'))
     return get_openai_response(topic, total_slides)
 
-@app.route('/get_images', methods=['GET'])
-def get_images():
-    image_folder = 'images'
-    image_files = [f for f in os.listdir(image_folder) if f.endswith('.JPG')]
-    image_urls = [url_for('serve_image', filename=f) for f in image_files]
-    return jsonify({'image_urls': image_urls})
+@app.route('/generate_presentation')
+def generate_presentation_route():
+    create_presentation("your_template.pptx", "your_data.json")
+    save_pptx_as_png("images", "NewModified_Presentation.pptx", True)
+    return "Presentation Generated and Converted to PNG!"
 
-# @app.route('/get_images-list', methods=['GET'])
+# @app.route('/get_images', methods=['GET'])
 # def get_images():
-#     filename = 'images/Slide1.JPG'
-#     return send_file(filename, mimetype="application/json")
-
-@app.route('/images/<filename>', methods=['GET'])
-def serve_image(filename):
-    return send_from_directory('images', filename)
-
+#     image_folder = 'images'
+#     image_files = [f for f in os.listdir(image_folder) if f.endswith('.JPG')]
+#     image_urls = [url_for('serve_image', filename=f) for f in image_files]
+#     return jsonify({'image_urls': image_urls})
 
 if __name__ == '__main__':
 	app.run(debug=True)
