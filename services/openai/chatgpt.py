@@ -33,5 +33,9 @@ def get_openai_response(topic, total_slides):
         ]
     )
     response_data = json.loads(response["choices"][0]["message"]["content"])
+
+    while len(response_data["slides"]) > total_slides:
+        # Remove the slide just before the "THANK YOU" slide
+        response_data["slides"].pop(-2)  # As -1 is the "THANK YOU" slide
     
     return jsonify(response_data)
