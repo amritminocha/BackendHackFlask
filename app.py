@@ -11,7 +11,6 @@ app = Flask(__name__)
 def index():
 	return 'Hello, Flask!'
 
-
 @app.route('/gpt')
 def getResponse():
     topic = request.args.get('topic')
@@ -20,8 +19,11 @@ def getResponse():
 
 @app.route('/generate_presentation')
 def generate_presentation_route():
-    create_presentation("your_template.pptx", "your_data.json")
-    save_pptx_as_png("images", "NewModified_Presentation.pptx", True)
+    json_value = request.json
+    template_index = int(request.args.get('tindex'))
+    print(template_index)
+    create_presentation(json_value, template_index)
+    # save_pptx_as_png("images", "NewModified_Presentation.pptx", True)
     return "Presentation Generated and Converted to PNG!"
 
 # @app.route('/get_images', methods=['GET'])
