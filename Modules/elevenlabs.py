@@ -1,6 +1,5 @@
 import os
 import requests
-import uuid
 
 ELEVENLABS_API_KEY = "19dfe9f4f3ac5d8158e25685510fdc95"
 
@@ -20,7 +19,7 @@ print()
 
 all_voices = get_voices()
 
-def generate_audio(text, output_path,voice_name):
+def generate_audio(slide_number,text, output_path,voice_name):
     voices = all_voices
 
     if not voices:
@@ -46,9 +45,7 @@ def generate_audio(text, output_path,voice_name):
         "model_id": "eleven_multilingual_v2"
     }
     response = requests.post(url, json=data, headers=headers)
-    
-    # Generate a unique filename using uuid
-    unique_filename = f"{uuid.uuid4()}.mp3"
+    unique_filename = f"Slide{slide_number}-Audio.mp3"
     full_output_path = os.path.join(output_path, unique_filename)
 
     #Write to file
@@ -56,3 +53,4 @@ def generate_audio(text, output_path,voice_name):
         output.write(response.content)
 
     return full_output_path
+generate_audio(1,"Hello World", "Audio_Files", "Adam")
